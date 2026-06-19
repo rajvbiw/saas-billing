@@ -56,13 +56,20 @@ Since Terraform will run automatically in GitHub Actions, you must create a pers
 ---
 
 ### Step 4: Configure GitHub Secrets
-To allow GitHub Actions to run Terraform and deploy to EKS, you must configure the following Secrets in your GitHub Repository:
-1. Go to your GitHub Repository -> **Settings** -> **Secrets and variables** -> **Actions**.
-2. Click **New repository secret** and add:
-   - `AWS_ACCOUNT_ID`: Your 12-digit AWS account ID.
-   - `AWS_ROLE_ARN`: The ARN of the IAM role GitHub Actions will assume (e.g., `arn:aws:iam::<ACCOUNT_ID>:role/saas-github-actions-role`).
-   - `AWS_REGION`: Set to `ap-south-1`.
-   - `SLACK_WEBHOOK`: (Optional) For deployment status alerts.
+To allow GitHub Actions to run Terraform and deploy to EKS, you must configure your AWS credentials. The pipeline is designed to support both standard AWS Access Keys (easiest) and AWS OIDC Role Assumption (recommended).
+
+Go to your GitHub Repository -> **Settings** -> **Secrets and variables** -> **Actions** -> **New repository secret**, and add:
+
+#### Option A: Using AWS Access Keys (Easiest Setup)
+- `AWS_ACCESS_KEY_ID`: Your AWS Access Key ID.
+- `AWS_SECRET_ACCESS_KEY`: Your AWS Secret Access Key.
+- `AWS_ACCOUNT_ID`: Your 12-digit AWS account ID.
+
+#### Option B: Using AWS OIDC IAM Role (Recommended for production)
+- `AWS_ROLE_ARN`: The ARN of the IAM role GitHub Actions will assume (e.g., `arn:aws:iam::<ACCOUNT_ID>:role/saas-github-actions-role`).
+- `AWS_ACCOUNT_ID`: Your 12-digit AWS account ID.
+
+*(In both options, you can optionally set `AWS_REGION` to `ap-south-1` and `SLACK_WEBHOOK` for status notifications).*
 
 ---
 
