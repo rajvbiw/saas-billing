@@ -9,7 +9,7 @@ const jwtSecret = process.env.JWT_SECRET || 'supersecretjwtkeychangeinproduction
 const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET || 'supersecretjwtrefreshkeychangeinproduction';
 const jwtExpiresIn = process.env.JWT_EXPIRES_IN || '15m';
 
-const SUPERADMIN_EMAIL = 'superadmin@saas.example.com';
+const SUPERADMIN_EMAIL = 'superadmin@saas-billing-rajbi.com';
 // Hashed value of 'superpassword' for initial demo login
 const SUPERADMIN_PASSWORD_HASH = bcrypt.hashSync('superpassword', 10);
 
@@ -46,7 +46,7 @@ async function register(req, res) {
       company_name,
       owner_name,
       owner_email,
-      subdomain: `${slug}.saas.example.com`,
+      subdomain: `${slug}.saas-billing-rajbi.com`,
       plan_id: plan.id,
       status: 'trialing',
       stripe_customer_id: stripeCustomer.id,

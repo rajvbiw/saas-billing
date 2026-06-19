@@ -14,7 +14,7 @@ metadata:
 spec:
   rules:
   # 1. Main marketing domain routing
-  - host: saas.example.com
+  - host: saas-billing-rajbi.com
     http:
       paths:
       - path: /api
@@ -32,7 +32,7 @@ spec:
             port:
               number: 80
   # 2. Wildcard tenant subdomain routing
-  - host: "*.saas.example.com"
+  - host: "*.saas-billing-rajbi.com"
     http:
       paths:
       - path: /api

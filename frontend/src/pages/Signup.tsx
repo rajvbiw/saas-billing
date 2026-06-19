@@ -163,7 +163,7 @@ export const Signup: React.FC = () => {
                 onChange={(e) => setSubdomain(e.target.value)}
                 className="w-full text-sm border border-gray-200 rounded-xl py-2 pl-3 pr-28 focus:outline-none focus:border-indigo-500"
               />
-              <span className="absolute right-3 text-xs text-gray-400 font-semibold">.saas.example.com</span>
+              <span className="absolute right-3 text-xs text-gray-400 font-semibold">.saas-billing-rajbi.com</span>
             </div>
             
             {/* Subdomain validation output */}

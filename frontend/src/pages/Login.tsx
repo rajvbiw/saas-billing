@@ -54,7 +54,7 @@ export const Login: React.FC = () => {
           </h1>
           <p className="text-xs text-gray-400">
             {tenantSlug 
-              ? `Workspace member login for ${tenantSlug}.saas.example.com`
+              ? `Workspace member login for ${tenantSlug}.saas-billing-rajbi.com`
               : 'Enter your tenant subdomain slug to access your subscription.'}
           </p>
         </div>
@@ -137,7 +137,7 @@ export const Login: React.FC = () => {
                 <input 
                   type="email" 
                   required 
-                  placeholder="superadmin@saas.example.com"
+                  placeholder="superadmin@saas-billing-rajbi.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full text-sm border border-gray-200 bg-white rounded-xl py-1.5 px-3 focus:outline-none focus:border-indigo-500"

@@ -37,10 +37,10 @@ frontend:
 
 ingress:
   enabled: true
-  domain: saas.example.com
+  domain: saas-billing-rajbi.com
   certificateArn: arn:aws:acm:ap-south-1:123456789012:certificate/wildcard-cert-id
 
 tenant:
   slug: default
-  subdomain: default.saas.example.com
+  subdomain: default.saas-billing-rajbi.com
   dbName: tenant_default_db

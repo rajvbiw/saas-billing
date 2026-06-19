@@ -14,9 +14,9 @@ const RDS_USER = process.env.RDS_USER || 'root';
 const RDS_PASSWORD = process.env.RDS_PASSWORD || 'rootpassword';
 const SHARED_DB_NAME = process.env.SHARED_DB_NAME || 'saas_platform';
 const HOSTED_ZONE_ID = process.env.HOSTED_ZONE_ID;
-const ALB_DNS_NAME = process.env.ALB_DNS_NAME || 'alb.saas.example.com';
+const ALB_DNS_NAME = process.env.ALB_DNS_NAME || 'alb.saas-billing-rajbi.com';
 const SNS_ALERT_TOPIC = process.env.SNS_ALERT_TOPIC_ARN;
-const FROM_EMAIL = process.env.SES_FROM_EMAIL || 'noreply@saas.example.com';
+const FROM_EMAIL = process.env.SES_FROM_EMAIL || 'noreply@saas-billing-rajbi.com';
 
 exports.handler = async (event) => {
   console.log('Received provisioning event payload:', JSON.stringify(event, null, 2));

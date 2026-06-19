@@ -169,7 +169,7 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
 resource "aws_eks_cluster" "main" {
   name     = "saas-cluster-${var.environment}"
   role_arn = aws_iam_role.eks_cluster.arn
-  version  = "1.29"
+  version  = "1.30"
 
   vpc_config {
     subnet_ids = [
@@ -381,7 +381,7 @@ resource "aws_lambda_function" "provision_tenant" {
       RDS_PASSWORD     = aws_secretsmanager_secret_version.db_pass.secret_string
       SHARED_DB_NAME   = "saas_platform"
       HOSTED_ZONE_ID   = aws_route53_zone.primary.zone_id
-      SES_FROM_EMAIL   = "noreply@saas.example.com"
+      SES_FROM_EMAIL   = "noreply@saas-billing-rajbi.com"
     }
   }
 }
@@ -396,7 +396,7 @@ resource "aws_lambda_event_source_mapping" "sqs_trigger" {
 # 8. ROUTE53 DNS
 # ==========================================
 resource "aws_route53_zone" "primary" {
-  name = "saas.example.com"
+  name = "saas-billing-rajbi.com"
 }
 
 # ==========================================

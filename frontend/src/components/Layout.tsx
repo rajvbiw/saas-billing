@@ -81,7 +81,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   {isSuperadmin ? 'Superadmin' : tenant?.companyName || 'SaaS Portal'}
                 </span>
                 {!isSuperadmin && tenantSlug && (
-                  <span className="text-xs text-indigo-500 font-medium mt-0.5">{tenantSlug}.saas.example.com</span>
+                  <span className="text-xs text-indigo-500 font-medium mt-0.5">{tenantSlug}.saas-billing-rajbi.com</span>
                 )}
               </div>
             </div>
