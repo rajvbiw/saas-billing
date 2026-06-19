@@ -50,7 +50,7 @@ Instead of using the AWS Console, you can create them instantly by running these
 
 ```bash
 # 1. Create the S3 Bucket in Mumbai (ap-south-1)
-aws s3api create-bucket --bucket saas-billing-tf-state-mumbai --region ap-south-1 --create-bucket-configuration LocationConstraint=ap-south-1
+aws s3api create-bucket --bucket saas-billing-tf-state-mumbai-rajbi --region ap-south-1 --create-bucket-configuration LocationConstraint=ap-south-1
 
 # 2. Create the DynamoDB Table for locks
 aws dynamodb create-table --table-name saas-billing-tf-locks --attribute-definitions AttributeName=LockID,AttributeType=S --key-schema AttributeName=LockID,KeyType=HASH --billing-mode PAY_PER_REQUEST --region ap-south-1

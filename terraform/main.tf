@@ -7,7 +7,7 @@ terraform {
     }
   }
   backend "s3" {
-    bucket         = "saas-billing-tf-state-mumbai"
+    bucket         = "saas-billing-tf-state-mumbai-rajbi"
     key            = "dev/terraform.tfstate"
     region         = "ap-south-1"
     dynamodb_table = "saas-billing-tf-locks"
