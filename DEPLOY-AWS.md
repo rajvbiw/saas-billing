@@ -44,14 +44,17 @@ You will be prompted to enter your:
 ---
 
 ### Step 3: Create S3 Remote Backend & DynamoDB for Terraform State
-Since Terraform will run automatically in GitHub Actions, you must create a persistent store for Terraform's state file (`terraform.tfstate`) and concurrency locks:
+Since Terraform runs automatically in GitHub Actions, you must create the persistent S3 state bucket and DynamoDB locking table first. 
 
-1. **Create an S3 Bucket:**
-   - Log in to your AWS Console, navigate to S3, and create a bucket named **`saas-billing-tf-state-mumbai`** in the `ap-south-1` region.
-2. **Create a DynamoDB Table:**
-   - Navigate to DynamoDB and create a table named **`saas-billing-tf-locks`**.
-   - Set the **Partition Key** name to **`LockID`** with type **`String`**.
-   - Leave other settings as default and create the table.
+Instead of using the AWS Console, you can create them instantly by running these two commands in your local terminal:
+
+```bash
+# 1. Create the S3 Bucket in Mumbai (ap-south-1)
+aws s3api create-bucket --bucket saas-billing-tf-state-mumbai --region ap-south-1 --create-bucket-configuration LocationConstraint=ap-south-1
+
+# 2. Create the DynamoDB Table for locks
+aws dynamodb create-table --table-name saas-billing-tf-locks --attribute-definitions AttributeName=LockID,AttributeType=S --key-schema AttributeName=LockID,KeyType=HASH --billing-mode PAY_PER_REQUEST --region ap-south-1
+```
 
 ---
 
