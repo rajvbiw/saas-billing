@@ -1,0 +1,12 @@
+{
+  "name": "provision-tenant-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function to provision database schemas, k8s namespaces and Route53 aliases for new tenants.",
+  "main": "src/index.js",
+  "dependencies": {
+    "@aws-sdk/client-route-53": "^3.500.0",
+    "@aws-sdk/client-ses": "^3.500.0",
+    "@aws-sdk/client-sns": "^3.500.0",
+    "mysql2": "^3.9.2"
+  }
+}

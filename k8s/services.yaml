@@ -1,0 +1,49 @@
+apiVersion: api/v1
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: saas-platform
+  labels:
+    app: backend
+spec:
+  ports:
+  - port: 5000
+    targetPort: 5000
+    name: http
+  - port: 5001
+    targetPort: 5001
+    name: socket
+  selector:
+    app: backend
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  namespace: saas-platform
+  labels:
+    app: redis
+spec:
+  ports:
+  - port: 6379
+    targetPort: 6379
+  selector:
+    app: redis
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: saas-platform
+  labels:
+    app: frontend
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: frontend
+  type: ClusterIP

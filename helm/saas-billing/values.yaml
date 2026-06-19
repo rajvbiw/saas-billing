@@ -1,0 +1,46 @@
+global:
+  environment: dev
+  awsRegion: us-east-1
+
+backend:
+  replicaCount: 2
+  image:
+    repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/saas-billing-backend
+    tag: latest
+    pullPolicy: IfNotPresent
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 512Mi
+    requests:
+      cpu: 200m
+      memory: 256Mi
+  service:
+    port: 5000
+    socketPort: 5001
+
+frontend:
+  replicaCount: 2
+  image:
+    repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/saas-billing-frontend
+    tag: latest
+    pullPolicy: IfNotPresent
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  service:
+    port: 80
+
+ingress:
+  enabled: true
+  domain: saas.example.com
+  certificateArn: arn:aws:acm:us-east-1:123456789012:certificate/wildcard-cert-id
+
+tenant:
+  slug: default
+  subdomain: default.saas.example.com
+  dbName: tenant_default_db

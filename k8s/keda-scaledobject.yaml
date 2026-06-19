@@ -1,0 +1,22 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: backend-sqs-scaler
+  namespace: saas-platform
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: backend
+  minReplicaCount: 2
+  maxReplicaCount: 10
+  cooldownPeriod: 300
+  restoreToOriginalReplicaCount: true
+  triggers:
+  - type: aws-sqs-queue
+    metadata:
+      # SQS Queue targeting telemetry events
+      queueURL: "https://sqs.us-east-1.amazonaws.com/123456789012/usage-events-queue"
+      queueLength: "5" # Scale up for every 5 messages
+      awsRegion: "us-east-1"
+      identityOwner: "operator"

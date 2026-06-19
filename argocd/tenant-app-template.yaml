@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tenant-{{ tenant_slug }}
+  namespace: argocd
+spec:
+  project: saas-billing
+  source:
+    repoURL: 'https://github.com/my-org/saas-billing-gitops.git'
+    targetRevision: HEAD
+    path: helm/saas-billing
+    helm:
+      valueFiles:
+        - values.yaml
+      parameters:
+        - name: tenant.slug
+          value: "{{ tenant_slug }}"
+        - name: tenant.subdomain
+          value: "{{ tenant_subdomain }}"
+        - name: tenant.dbName
+          value: "tenant_{{ tenant_slug }}_db"
+        - name: backend.replicaCount
+          value: "1"
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: "tenant-{{ tenant_slug }}"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,95 @@
+{
+  "customer.subscription.created": {
+    "id": "evt_sub_created_mock",
+    "object": "event",
+    "type": "customer.subscription.created",
+    "data": {
+      "object": {
+        "id": "sub_mock_acme123",
+        "customer": "cus_acme123",
+        "status": "active",
+        "current_period_start": 1700000000,
+        "current_period_end": 1702592000,
+        "cancel_at_period_end": false,
+        "trial_start": null,
+        "trial_end": null,
+        "items": {
+          "object": "list",
+          "data": [
+            {
+              "id": "si_mock_acme123",
+              "price": {
+                "id": "price_pro_id",
+                "product": "prod_pro"
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "customer.subscription.deleted": {
+    "id": "evt_sub_deleted_mock",
+    "object": "event",
+    "type": "customer.subscription.deleted",
+    "data": {
+      "object": {
+        "id": "sub_mock_acme123",
+        "customer": "cus_acme123",
+        "status": "canceled"
+      }
+    }
+  },
+  "invoice.payment_succeeded": {
+    "id": "evt_invoice_succeeded_mock",
+    "object": "event",
+    "type": "invoice.payment_succeeded",
+    "data": {
+      "object": {
+        "id": "in_succeeded_mock",
+        "customer": "cus_acme123",
+        "subscription": "sub_mock_acme123",
+        "amount_due": 9900,
+        "amount_paid": 9900,
+        "status": "paid",
+        "invoice_pdf": "https://stripe.com/invoice_mock.pdf",
+        "period_start": 1700000000,
+        "period_end": 1702592000,
+        "due_date": 1702592000,
+        "hosted_invoice_url": "https://stripe.com/pay/in_succeeded_mock"
+      }
+    }
+  },
+  "invoice.payment_failed": {
+    "id": "evt_invoice_failed_mock",
+    "object": "event",
+    "type": "invoice.payment_failed",
+    "data": {
+      "object": {
+        "id": "in_failed_mock",
+        "customer": "cus_acme123",
+        "subscription": "sub_mock_acme123",
+        "amount_due": 9900,
+        "amount_paid": 0,
+        "status": "open",
+        "invoice_pdf": "https://stripe.com/invoice_failed_mock.pdf",
+        "period_start": 1700000000,
+        "period_end": 1702592000,
+        "due_date": 1702592000,
+        "hosted_invoice_url": "https://stripe.com/pay/in_failed_mock"
+      }
+    }
+  },
+  "customer.subscription.trial_will_end": {
+    "id": "evt_trial_ending_mock",
+    "object": "event",
+    "type": "customer.subscription.trial_will_end",
+    "data": {
+      "object": {
+        "id": "sub_mock_globex123",
+        "customer": "cus_globex123",
+        "trial_end": 1702592000
+      }
+    }
+  }
+}

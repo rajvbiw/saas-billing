@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "saas-billing.fullname" . }}-backend
+  labels:
+    app.kubernetes.io/name: {{ include "saas-billing.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    component: backend
+spec:
+  replicas: {{ .Values.backend.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "saas-billing.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      component: backend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "saas-billing.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        component: backend
+    spec:
+      containers:
+      - name: backend
+        image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+        imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+        ports:
+        - name: http
+          containerPort: {{ .Values.backend.service.port }}
+        - name: socket
+          containerPort: {{ .Values.backend.service.socketPort }}
+        resources:
+          {{- toYaml .Values.backend.resources | nindent 10 }}
+        env:
+        - name: DB_HOST
+          value: "{{ .Values.global.dbHost | default "mysql" }}"
+        - name: REDIS_HOST
+          value: "{{ .Values.global.redisHost | default "redis" }}"
+        - name: TENANT_SLUG
+          value: "{{ .Values.tenant.slug }}"
+        - name: TENANT_SUBDOMAIN
+          value: "{{ .Values.tenant.subdomain }}"
+        - name: TENANT_DB_NAME
+          value: "{{ .Values.tenant.dbName }}"

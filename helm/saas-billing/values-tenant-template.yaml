@@ -1,0 +1,18 @@
+# Override values for tenant namespace provisioning
+tenant:
+  slug: "{{ tenant_slug }}"
+  subdomain: "{{ tenant_subdomain }}"
+  dbName: "tenant_{{ tenant_slug }}_db"
+
+backend:
+  replicaCount: 1 # Default 1 replica for tenant-specific namespaces
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+frontend:
+  enabled: false # Tenants share a wildcard routing on the main ALB frontend ingress
