@@ -15,7 +15,7 @@ permissions:
   security-events: write
 
 env:
-  AWS_REGION: ${{ secrets.AWS_REGION || 'us-east-1' }}
+  AWS_REGION: ${{ secrets.AWS_REGION || 'ap-south-1' }}
   AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
 
@@ -84,12 +84,44 @@ jobs:
           # npm test # executes Jest test blocks (skipping as placeholders)
 
   # ==========================================
+  # 2.5. INFRASTRUCTURE PROVISIONING (TERRAFORM)
+  # ==========================================
+  terraform:
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.0
+
+      - name: Terraform Init
+        run: |
+          cd terraform
+          terraform init
+
+      - name: Terraform Apply
+        run: |
+          cd terraform
+          terraform apply -auto-approve
+
+  # ==========================================
   # 3. BUILD AND PUSH TO ECR
   # ==========================================
   build-and-push:
     name: Build & Push to ECR
     runs-on: ubuntu-latest
-    needs: test
+    needs: terraform
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4

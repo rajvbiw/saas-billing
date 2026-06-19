@@ -1,6 +1,8 @@
 # AWS Production Deployment Guide (Terraform + EKS + RDS)
 
-This guide walks you through deploying the multi-tenant SaaS Billing platform to AWS using the configured Terraform script.
+This guide walks you through deploying the multi-tenant SaaS Billing platform to AWS. 
+
+Infrastructure deployment is fully automated! When you push your code to the `develop` or `main` branches, **GitHub Actions will automatically run Terraform and deploy your Kubernetes pods**.
 
 ---
 
@@ -41,81 +43,63 @@ You will be prompted to enter your:
 
 ---
 
-### Step 3: Package the Provisioning Lambda
-We have already packaged the Lambda code and dependencies into [terraform/lambda.zip](file:///d:/devops/NEW_PROJECT_FILE/full%20project/saas-billing/terraform/lambda.zip). 
-*(If you ever modify the Lambda code under `/lambda/provision-tenant/`, you can repackage it by running: `Compress-Archive -Path "lambda/provision-tenant/*" -DestinationPath "terraform/lambda.zip" -Force` in PowerShell).*
+### Step 3: Create S3 Remote Backend & DynamoDB for Terraform State
+Since Terraform will run automatically in GitHub Actions, you must create a persistent store for Terraform's state file (`terraform.tfstate`) and concurrency locks:
+
+1. **Create an S3 Bucket:**
+   - Log in to your AWS Console, navigate to S3, and create a bucket named **`saas-billing-tf-state-mumbai`** in the `ap-south-1` region.
+2. **Create a DynamoDB Table:**
+   - Navigate to DynamoDB and create a table named **`saas-billing-tf-locks`**.
+   - Set the **Partition Key** name to **`LockID`** with type **`String`**.
+   - Leave other settings as default and create the table.
 
 ---
 
-### Step 4: Initialize and Apply Terraform
-1. Open terminal and navigate to the `terraform/` folder:
-   ```bash
-   cd terraform
-   ```
-2. Initialize Terraform providers and backend:
-   ```bash
-   terraform init
-   ```
-3. Generate a plan to preview the infrastructure resources:
-   ```bash
-   terraform plan
-   ```
-4. Apply the configuration to create the infrastructure:
-   ```bash
-   terraform apply
-   ```
-   *Type `yes` when prompted to confirm.*
-   
-> [!IMPORTANT]
-> EKS cluster and node group provisioning takes around **15 to 20 minutes** to complete. Please do not interrupt the process.
+### Step 4: Configure GitHub Secrets
+To allow GitHub Actions to run Terraform and deploy to EKS, you must configure the following Secrets in your GitHub Repository:
+1. Go to your GitHub Repository -> **Settings** -> **Secrets and variables** -> **Actions**.
+2. Click **New repository secret** and add:
+   - `AWS_ACCOUNT_ID`: Your 12-digit AWS account ID.
+   - `AWS_ROLE_ARN`: The ARN of the IAM role GitHub Actions will assume (e.g., `arn:aws:iam::<ACCOUNT_ID>:role/saas-github-actions-role`).
+   - `AWS_REGION`: Set to `ap-south-1`.
+   - `SLACK_WEBHOOK`: (Optional) For deployment status alerts.
 
 ---
 
-### Step 5: Connect Kubernetes `kubectl` to EKS
-Once `terraform apply` finishes successfully, configure your local `kubectl` to communicate with the new EKS cluster:
+### Step 5: Push to GitHub to Trigger Automatic Deployment
+With the S3 backend and secrets set up, you no longer need to run Terraform manually!
+1. Stage and commit your changes:
+   ```bash
+   git add .
+   git commit -m "Automate terraform setup in CI/CD pipeline"
+   ```
+2. Push your changes to the `develop` or `main` branch:
+   ```bash
+   git push origin main
+   ```
+3. Go to the **Actions** tab of your GitHub repository. You will see the **Platform CI/CD Pipeline** running:
+   - **Quality Check (Lint)** & **Automated Tests** will run.
+   - **Terraform Apply** job will trigger to provision or update all AWS resources.
+   - **Build & Push to ECR** will build Docker images and push them to ECR.
+   - **Trivy Security Scan** will run vulnerability analysis.
+   - **Deploy to EKS** will update the running Kubernetes pods with the new images.
+
+---
+
+### Step 6: Connect Local `kubectl` to EKS (Manual Verification)
+After the automated pipeline completes, you can connect your local machine to the cluster to monitor the nodes and pods:
 ```bash
 aws eks update-kubeconfig --region ap-south-1 --name saas-cluster-dev
 ```
-Verify the connection by running:
+Verify the connection:
 ```bash
 kubectl get nodes
+kubectl get pods -A
 ```
-You should see your `t3.medium` worker nodes in the output.
 
 ---
 
-### Step 6: Build and Push Docker Images to ECR
-Retrieve your AWS account ID (or find it in the ECR repository URLs output by Terraform). Log in to ECR and push your built backend and frontend images:
-
-1. **Log in to ECR:**
-   ```bash
-   aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com
-   ```
-2. **Tag and Push Backend:**
-   ```bash
-   docker tag saas-billing-backend:latest <AWS_ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com/saas-billing-backend:latest
-   docker push <AWS_ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com/saas-billing-backend:latest
-   ```
-3. **Tag and Push Frontend:**
-   ```bash
-   docker tag saas-billing-frontend:latest <AWS_ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com/saas-billing-frontend:latest
-   docker push <AWS_ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com/saas-billing-frontend:latest
-   ```
-
----
-
-### Step 7: Deploy Services (Helm or Kubernetes Manifests)
-Deploy the application charts using Helm or ArgoCD:
-1. Open the [helm/saas-billing/values.yaml](file:///d:/devops/NEW_PROJECT_FILE/full%20project/saas-billing/helm/saas-billing) or Kubernetes config templates.
-2. Update the environment database host (using the RDS endpoint output by Terraform) and Redis host (using the ElastiCache endpoint).
-3. Apply the helm chart to EKS:
-   ```bash
-   helm install saas-billing ./helm/saas-billing -n default
-   ```
-
----
-
-### Step 8: Database Seeding
+### Step 7: Database Seeding
 Connect to the RDS MySQL instance (from inside the EKS cluster or via a bastion host) and run the seed script to populate default plans:
 ```bash
 # Exec into your backend pod and run:

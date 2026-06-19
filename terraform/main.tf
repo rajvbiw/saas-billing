@@ -6,8 +6,13 @@ terraform {
       version = "~> 5.0"
     }
   }
-  # Backend config placeholder
-  # backend "s3" {}
+  backend "s3" {
+    bucket         = "saas-billing-tf-state-mumbai"
+    key            = "dev/terraform.tfstate"
+    region         = "ap-south-1"
+    dynamodb_table = "saas-billing-tf-locks"
+    encrypt        = true
+  }
 }
 
 provider "aws" {
