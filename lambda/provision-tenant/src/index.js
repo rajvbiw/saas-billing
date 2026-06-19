@@ -3,9 +3,9 @@ const { Route53Client, ChangeResourceRecordSetsCommand } = require('@aws-sdk/cli
 const { SESClient, SendEmailCommand } = require('@aws-sdk/client-ses');
 const { SNSClient, PublishCommand } = require('@aws-sdk/client-sns');
 
-const route53 = new Route53Client({ region: process.env.AWS_REGION || 'us-east-1' });
-const ses = new SESClient({ region: process.env.AWS_REGION || 'us-east-1' });
-const sns = new SNSClient({ region: process.env.AWS_REGION || 'us-east-1' });
+const route53 = new Route53Client({ region: process.env.AWS_REGION || 'ap-south-1' });
+const ses = new SESClient({ region: process.env.AWS_REGION || 'ap-south-1' });
+const sns = new SNSClient({ region: process.env.AWS_REGION || 'ap-south-1' });
 
 // Global configurations
 const RDS_HOST = process.env.RDS_HOST || '127.0.0.1';
