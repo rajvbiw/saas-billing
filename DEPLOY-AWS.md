@@ -5,7 +5,7 @@ This guide walks you through deploying the multi-tenant SaaS Billing platform to
 ---
 
 ## 🏗️ Overview of Resources
-Terraform will provision the following resources in the `us-east-1` region:
+Terraform will provision the following resources in the `ap-south-1` region:
 - **VPC** with 2 Public Subnets, 2 Private Subnets, and a **NAT Gateway** (secure outbound routing for private nodes).
 - **ECR Registries** to host your frontend and backend Docker images.
 - **EKS Cluster (v1.29)** with a worker **Node Group** (`t3.medium` instances) running inside the private subnets.
@@ -36,7 +36,7 @@ aws configure
 You will be prompted to enter your:
 - **AWS Access Key ID**
 - **AWS Secret Access Key**
-- **Default region name:** `us-east-1`
+- **Default region name:** `ap-south-1`
 - **Default output format:** `json`
 
 ---
@@ -74,7 +74,7 @@ We have already packaged the Lambda code and dependencies into [terraform/lambda
 ### Step 5: Connect Kubernetes `kubectl` to EKS
 Once `terraform apply` finishes successfully, configure your local `kubectl` to communicate with the new EKS cluster:
 ```bash
-aws eks update-kubeconfig --region us-east-1 --name saas-cluster-dev
+aws eks update-kubeconfig --region ap-south-1 --name saas-cluster-dev
 ```
 Verify the connection by running:
 ```bash
@@ -89,17 +89,17 @@ Retrieve your AWS account ID (or find it in the ECR repository URLs output by Te
 
 1. **Log in to ECR:**
    ```bash
-   aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com
+   aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com
    ```
 2. **Tag and Push Backend:**
    ```bash
-   docker tag saas-billing-backend:latest <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/saas-billing-backend:latest
-   docker push <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/saas-billing-backend:latest
+   docker tag saas-billing-backend:latest <AWS_ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com/saas-billing-backend:latest
+   docker push <AWS_ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com/saas-billing-backend:latest
    ```
 3. **Tag and Push Frontend:**
    ```bash
-   docker tag saas-billing-frontend:latest <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/saas-billing-frontend:latest
-   docker push <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/saas-billing-frontend:latest
+   docker tag saas-billing-frontend:latest <AWS_ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com/saas-billing-frontend:latest
+   docker push <AWS_ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com/saas-billing-frontend:latest
    ```
 
 ---

@@ -7,7 +7,7 @@ data:
   NODE_ENV: "production"
   DB_HOST: "mysql.saas-platform.svc.cluster.local"
   REDIS_HOST: "redis-service.saas-platform.svc.cluster.local"
-  AWS_REGION: "us-east-1"
+  AWS_REGION: "ap-south-1"
   SES_FROM_EMAIL: "noreply@saas.example.com"
   FRONTEND_URL: "https://saas.example.com"
   PORT: "5000"

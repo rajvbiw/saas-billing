@@ -1,11 +1,11 @@
 global:
   environment: dev
-  awsRegion: us-east-1
+  awsRegion: ap-south-1
 
 backend:
   replicaCount: 2
   image:
-    repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/saas-billing-backend
+    repository: 123456789012.dkr.ecr.ap-south-1.amazonaws.com/saas-billing-backend
     tag: latest
     pullPolicy: IfNotPresent
   resources:
@@ -22,7 +22,7 @@ backend:
 frontend:
   replicaCount: 2
   image:
-    repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/saas-billing-frontend
+    repository: 123456789012.dkr.ecr.ap-south-1.amazonaws.com/saas-billing-frontend
     tag: latest
     pullPolicy: IfNotPresent
   resources:
@@ -38,7 +38,7 @@ frontend:
 ingress:
   enabled: true
   domain: saas.example.com
-  certificateArn: arn:aws:acm:us-east-1:123456789012:certificate/wildcard-cert-id
+  certificateArn: arn:aws:acm:ap-south-1:123456789012:certificate/wildcard-cert-id
 
 tenant:
   slug: default

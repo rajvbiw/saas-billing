@@ -1,7 +1,7 @@
 const { SESClient, SendEmailCommand } = require('@aws-sdk/client-ses');
 require('dotenv').config();
 
-const region = process.env.AWS_REGION || 'us-east-1';
+const region = process.env.AWS_REGION || 'ap-south-1';
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
 const fromEmail = process.env.AWS_SES_FROM_EMAIL || 'noreply@saas.example.com';

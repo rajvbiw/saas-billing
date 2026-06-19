@@ -16,7 +16,7 @@ spec:
   - type: aws-sqs-queue
     metadata:
       # SQS Queue targeting telemetry events
-      queueURL: "https://sqs.us-east-1.amazonaws.com/123456789012/usage-events-queue"
+      queueURL: "https://sqs.ap-south-1.amazonaws.com/123456789012/usage-events-queue"
       queueLength: "5" # Scale up for every 5 messages
-      awsRegion: "us-east-1"
+      awsRegion: "ap-south-1"
       identityOwner: "operator"
