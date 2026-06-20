@@ -251,6 +251,7 @@ jobs:
 
       - name: Deploy Deployments Rollouts
         run: |
+          kubectl apply -f k8s/namespace.yaml
           kubectl apply -f k8s/
           kubectl set image deployment/backend backend=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/saas-billing-backend:${{ github.sha }} -n saas-platform
           kubectl set image deployment/frontend frontend=${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/saas-billing-frontend:${{ github.sha }} -n saas-platform
