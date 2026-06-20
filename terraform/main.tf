@@ -302,7 +302,8 @@ resource "aws_sqs_queue" "provisioning_dlq" {
 }
 
 resource "aws_sqs_queue" "provisioning_queue" {
-  name                      = "tenant-provisioning-queue-${var.environment}"
+  name                       = "tenant-provisioning-queue-${var.environment}"
+  visibility_timeout_seconds = 300
   redrive_policy = jsonencode({
     deadLetterTargetArn = aws_sqs_queue.provisioning_dlq.arn
     maxReceiveCount     = 3
