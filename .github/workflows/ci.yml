@@ -264,7 +264,7 @@ jobs:
     name: Post Status Alert
     runs-on: ubuntu-latest
     needs: [deploy]
-    if: always()
+    if: always() && secrets.SLACK_WEBHOOK != ''
     steps:
       - name: Slack notification dispatch
         uses: rtCamp/action-slack-notify@v2
