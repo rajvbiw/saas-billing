@@ -330,6 +330,12 @@ resource "aws_iam_role_policy_attachment" "lambda_vpc" {
   role       = aws_iam_role.lambda_exec.name
 }
 
+# SQS execution policy for Lambda (so it can be triggered by SQS queue events)
+resource "aws_iam_role_policy_attachment" "lambda_sqs" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole"
+  role       = aws_iam_role.lambda_exec.name
+}
+
 # Custom inline policy for Route53, SES, and SNS access
 resource "aws_iam_role_policy" "lambda_custom" {
   name = "saas-provisioning-lambda-custom-policy-${var.environment}"
