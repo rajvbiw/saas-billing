@@ -104,6 +104,16 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           audience: sts.amazonaws.com
 
+      - name: Install Lambda dependencies
+        run: |
+          cd lambda/provision-tenant
+          npm ci
+
+      - name: Package Lambda into zip
+        run: |
+          cd lambda/provision-tenant
+          zip -r ../../terraform/lambda.zip .
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
