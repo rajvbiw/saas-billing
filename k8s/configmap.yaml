@@ -5,7 +5,7 @@ metadata:
   namespace: saas-platform
 data:
   NODE_ENV: "production"
-  DB_HOST: "mysql.saas-platform.svc.cluster.local"
+  DB_HOST: "terraform-2026061915023212320000000a.cr8o0as8uj0s.ap-south-1.rds.amazonaws.com"
   REDIS_HOST: "redis-service.saas-platform.svc.cluster.local"
   AWS_REGION: "ap-south-1"
   SES_FROM_EMAIL: "noreply@saas-billing-rajbi.com"
