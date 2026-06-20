@@ -264,11 +264,13 @@ jobs:
     name: Post Status Alert
     runs-on: ubuntu-latest
     needs: [deploy]
-    if: always() && secrets.SLACK_WEBHOOK != ''
+    if: always()
+    env:
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
     steps:
       - name: Slack notification dispatch
+        if: env.SLACK_WEBHOOK != ''
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_TITLE: "Deployment Run Status"
           SLACK_MESSAGE: "CI/CD Pipeline run completed. Branch: ${{ github.ref }}"
